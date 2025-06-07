@@ -5,3 +5,5 @@
 !/.yarn/sdks
 !/.yarn/cache
 .env
+
+node_modules/
