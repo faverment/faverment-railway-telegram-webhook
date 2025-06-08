@@ -51,28 +51,37 @@ router.post("/webhook", (req, res) => {
   let data = req.body;
   if (data.type === "DEPLOY" && data.status === "SUCCESS") {
     sendMessage(
-      `<b>Deployment: ${data.project.name}</b>\n\✅ Status: <code>${data.status}</code>\n🌳 Environment: <code>${data.environment.name}</code>\n👨‍💻 Creator: <code>${data.deployment.creator.name}</code>`,
+      `<b>Deployment: ${data.project.name}</b>\n\✅ Status: <code>${data.status}</code>\n🌳 Environment: <code>${data.environment.name}</code>\n👨‍💻 Creator: <code>${data.deployment.creator.name}</code>\n🔗 Commit Message: <code>${data.deployment.meta.commitMessage}</code>`,
       "View Deployment",
       `https://railway.app/project/${data.project.id}/`
     );
   } else if (data.type === "DEPLOY" && data.status === "BUILDING") {
     sendMessage(
-      `<b>Deployment: ${data.project.name}</b>\n\⚒️ Status: <code>${data.status}</code>\n🌳 Environment: <code>${data.environment.name}</code>\n👨‍💻 Creator: <code>${data.deployment.creator.name}</code>`,
+      `<b>Deployment: ${data.project.name}</b>\n\⚒️ Status: <code>${data.status}</code>\n🌳 Environment: <code>${data.environment.name}</code>\n👨‍💻 Creator: <code>${data.deployment.creator.name}</code>\n🔗 Commit Message: <code>${data.deployment.meta.commitMessage}</code>`,
       "View Deployment",
       `https://railway.app/project/${data.project.id}/`
     );
   } else if (data.type === "DEPLOY" && data.status === "DEPLOYING") {
     sendMessage(
-      `<b>Deployment: ${data.project.name}</b>\n\🚀 Status: <code>${data.status}</code>\n🌳 Environment: <code>${data.environment.name}</code>\n👨‍💻 Creator: <code>${data.deployment.creator.name}</code>`,
+      `<b>Deployment: ${data.project.name}</b>\n\🚀 Status: <code>${data.status}</code>\n🌳 Environment: <code>${data.environment.name}</code>\n👨‍💻 Creator: <code>${data.deployment.creator.name}</code>\n🔗 Commit Message: <code>${data.deployment.meta.commitMessage}</code>`,
       "View Deployment",
       `https://railway.app/project/${data.project.id}/`
     );
-  } else if (data.type === "DEPLOY" && data.status === "CRASHED") {
+  } else if (data.type === "DEPLOY" && (data.status === "CRASHED" || data.status === "FAILED")) {
     sendMessage(
-      `<b>Deployment: ${data.project.name}</b>\n\❌ Status: <code>${data.status}</code>\n🌳 Environment: <code>${data.environment.name}</code>\n👨‍💻 Creator: <code>${data.deployment.creator.name}</code>`,
+      `<b>Deployment: ${data.project.name}</b>\n\❌ Status: <code>${data.status}</code>\n🌳 Environment: <code>${data.environment.name}</code>\n👨‍💻 Creator: <code>${data.deployment.creator.name}</code>\n🔗 Commit Message: <code>${data.deployment.meta.commitMessage}</code>`,
       "View Deployment",
       `https://railway.app/project/${data.project.id}/`
     );
+  } else if (data.type === "DEPLOY" && data.status === "REMOVING") {
+    const displayData = {
+      project: data.project.name,
+      status: data.status,
+      environment: data.environment.name,
+      creator: data.deployment.creator.name,
+      commitMessage: data.deployment.meta.commitMessage,
+    }
+    console.log("Removing deployment: ", displayData);
   } else {
     console.log("Unknown event: ", data);
   }
