@@ -83,6 +83,11 @@ router.post("/webhook", (req, res) => {
     }
     console.log("Removing deployment: ", displayData);
   } else {
+    sendMessage(
+      `<b>Deployment: ${data.project.name}</b>\n\🔄 Status: <code>${data.status}</code>\n🌳 Environment: <code>${data.environment.name}</code>\n👨‍💻 Creator: <code>${data.deployment.creator.name}</code>\n🔗 Commit Message: <code>${data.deployment.meta.commitMessage}</code>`,
+      "View Deployment",
+      `https://railway.app/project/${data.project.id}/`
+    );
     console.log("Unknown event: ", data);
   }
   res.sendStatus(200);
